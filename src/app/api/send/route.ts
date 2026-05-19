@@ -71,7 +71,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await resend.emails.send({
       from: 'Unique Classes Leads <onboarding@resend.dev>',
-      to: ['accesslysolution@gmail.com'],
+      to: ['uniqueclasses11@gmail.com'],
       subject: `${isAST ? '🏆 AST REGISTRATION' : '📩 NEW ENQUIRY'}: ${name}`,
       html: emailHtml,
     });
