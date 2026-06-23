@@ -52,7 +52,7 @@ export const ContactSection = () => {
 
   // Professional pre-typed WhatsApp message
   const whatsappMessage = encodeURIComponent(
-    "Hello Unique Classes, I am interested in enrolling/inquiring about your courses. Please share more details."
+    "Hello Unique Classes, I am interested in enrolling/enquiring about your courses. Please share more details."
   );
 
   return (
