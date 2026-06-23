@@ -27,7 +27,7 @@ export const FloatingContactActions = () => {
       {/* RIGHT BOTTOM CORNER: WhatsApp Chat Trigger */}
       <div className="fixed bottom-6 right-6 z-[100] pointer-events-auto">
         <a
-          href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I would like to inquire about your programs.")}`}
+          href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I would like to enquire about your programs.")}`}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat on WhatsApp"
