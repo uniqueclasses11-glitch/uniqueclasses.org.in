@@ -7,17 +7,18 @@ import { studentResults } from "@/data/students";
 import { Award } from "lucide-react";
 
 export default function ResultsPage() {
-  const [filter, setFilter] = useState<"All" | "10th SSC" | "10th CBSE">("All");
+  const [filter, setFilter] = useState<"All" | "10th SSC" | "10th CBSE" | "MHT-CET">("All");
 
   const filteredStudents =
     filter === "All"
       ? studentResults
       : studentResults.filter((s) => s.exam === filter);
 
-  const filterOptions: ("All" | "10th SSC" | "10th CBSE")[] = [
+  const filterOptions: ("All" | "10th SSC" | "10th CBSE" | "MHT-CET")[] = [
     "All",
     "10th SSC",
     "10th CBSE",
+    "MHT-CET",
   ];
 
   return (
@@ -32,7 +33,7 @@ export default function ResultsPage() {
               Our Achievers
             </h1>
 
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
               {filterOptions.map((option) => (
                 <button
                   key={option}
