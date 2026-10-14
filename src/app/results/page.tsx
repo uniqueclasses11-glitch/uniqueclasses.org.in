@@ -3,16 +3,36 @@
 import { useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { Hero } from "@/components/sections/Hero";
-import { studentResults } from "@/data/students";
+import { studentResults, Student } from "@/data/students";
 import { Award } from "lucide-react";
+
+// Helper function to extract numeric score values for sorting descending
+const getScoreValue = (scoreStr: string) => {
+  const num = parseFloat(scoreStr.replace(/[^0-9.]/g, ""));
+  return isNaN(num) ? 0 : num;
+};
+
+// Function to sort students by score descending for any given array or filter
+const sortTopPerformersFirst = (students: Student[]) => {
+  const exams: Student["exam"][] = ["10th CBSE", "10th SSC", "MHT-CET", "JEE", "NEET"];
+  
+  return exams.flatMap((examType) => {
+    return students
+      .filter((s) => s.exam === examType)
+      .sort((a, b) => getScoreValue(b.score) - getScoreValue(a.score));
+  }).concat(students.filter((s) => !exams.includes(s.exam)));
+};
 
 export default function ResultsPage() {
   const [filter, setFilter] = useState<"All" | "10th SSC" | "10th CBSE" | "MHT-CET">("All");
 
-  const filteredStudents =
+  const rawFilteredStudents =
     filter === "All"
       ? studentResults
       : studentResults.filter((s) => s.exam === filter);
+
+  // Apply the sorting logic so top performers are always at the top
+  const filteredStudents = sortTopPerformersFirst(rawFilteredStudents);
 
   const filterOptions: ("All" | "10th SSC" | "10th CBSE" | "MHT-CET")[] = [
     "All",
@@ -40,7 +60,7 @@ export default function ResultsPage() {
                   onClick={() => setFilter(option)}
                   className={`px-6 py-2 rounded-full font-bold transition-all ${
                     filter === option
-                      ? "bg-cta text-white"
+                      ? "bg-cta text-white shadow-md"
                       : "bg-white border border-slate-200 hover:border-cta/50"
                   }`}
                 >
@@ -62,7 +82,7 @@ export default function ResultsPage() {
                     alt={student.name}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute top-3 left-3 bg-cta text-white px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest">
+                  <div className="absolute top-3 left-3 bg-cta text-white px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">
                     {student.exam}
                   </div>
                 </div>

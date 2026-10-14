@@ -9,9 +9,31 @@ interface ResultsSectionProps {
   onStudentClick: (student: Student) => void;
 }
 
+// Helper function to extract numeric score values for sorting descending
+const getScoreValue = (scoreStr: string) => {
+  const num = parseFloat(scoreStr.replace(/[^0-9.]/g, ""));
+  return isNaN(num) ? 0 : num;
+};
+
 export const ResultsSection = ({ onStudentClick }: ResultsSectionProps) => {
+  // Group and sort students by exam category so top performers appear first in descending order
+  const exams: Student["exam"][] = ["10th CBSE", "10th SSC", "MHT-CET", "JEE", "NEET"];
+  
+  const sortedStudents = exams.flatMap((examType) => {
+    return studentResults
+      .filter((s) => s.exam === examType)
+      .sort((a, b) => getScoreValue(b.score) - getScoreValue(a.score));
+  });
+
+  // Fallback for any other exam types not explicitly listed above
+  const remainingStudents = studentResults.filter(
+    (s) => !exams.includes(s.exam)
+  );
+
+  const prioritizedResults = [...sortedStudents, ...remainingStudents];
+
   // Triple for seamless looping
-  const scrollResults = [...studentResults, ...studentResults, ...studentResults];
+  const scrollResults = [...prioritizedResults, ...prioritizedResults, ...prioritizedResults];
 
   return (
     <Section id="results" className="bg-slate-50 overflow-hidden py-10 md:py-24">
@@ -49,7 +71,7 @@ export const ResultsSection = ({ onStudentClick }: ResultsSectionProps) => {
               key={`${student.id}-${i}`} 
               student={student} 
               onOpen={() => onStudentClick(student)} 
-              />
+            />
           ))}
         </motion.div>
         
