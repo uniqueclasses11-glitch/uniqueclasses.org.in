@@ -12,27 +12,29 @@ const getScoreValue = (scoreStr: string) => {
   return isNaN(num) ? 0 : num;
 };
 
-// Function to sort students by score descending for any given array or filter
-const sortTopPerformersFirst = (students: Student[]) => {
-  const exams: Student["exam"][] = ["10th CBSE", "10th SSC", "MHT-CET", "JEE", "NEET"];
-  
-  return exams.flatMap((examType) => {
-    return students
-      .filter((s) => s.exam === examType)
-      .sort((a, b) => getScoreValue(b.score) - getScoreValue(a.score));
-  }).concat(students.filter((s) => !exams.includes(s.exam)));
+// Function to sort students by score descending globally or within their category
+const sortStudentsByScore = (students: Student[], isAllFilter: boolean) => {
+  if (isAllFilter) {
+    // Globally sort all students by score descending, ignoring category grouping
+    return [...students].sort((a, b) => getScoreValue(b.score) - getScoreValue(a.score));
+  } else {
+    // Sort specifically within the selected category descending by score
+    return [...students].sort((a, b) => getScoreValue(b.score) - getScoreValue(a.score));
+  }
 };
 
 export default function ResultsPage() {
   const [filter, setFilter] = useState<"All" | "10th SSC" | "10th CBSE" | "MHT-CET">("All");
 
+  const isAll = filter === "All";
+
   const rawFilteredStudents =
-    filter === "All"
+    isAll
       ? studentResults
       : studentResults.filter((s) => s.exam === filter);
 
-  // Apply the sorting logic so top performers are always at the top
-  const filteredStudents = sortTopPerformersFirst(rawFilteredStudents);
+  // Apply sorting based on whether "All" or a specific filter is active
+  const filteredStudents = sortStudentsByScore(rawFilteredStudents, isAll);
 
   const filterOptions: ("All" | "10th SSC" | "10th CBSE" | "MHT-CET")[] = [
     "All",
