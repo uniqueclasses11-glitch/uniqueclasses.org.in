@@ -82,9 +82,11 @@ export const Navbar = () => {
               <Image src="/logo.avif" alt="Logo" fill className="object-contain" priority />
             </div>
 
-            <div className="h-5 md:h-6 w-[1px] bg-slate-200 shrink-0" />
+            {/* Adjusted divider height to match the larger name size */}
+            <div className="h-7 md:h-8 w-[1px] bg-slate-200 shrink-0" />
 
-            <div className="relative h-5 md:h-6 aspect-[1080/450] shrink-0">
+            {/* Increased height classes here: h-7 md:h-9 (previously h-5 md:h-6) */}
+            <div className="relative h-7 md:h-9 aspect-[1080/450] shrink-0">
               <Image src="/names.avif" alt="Name" fill className="object-contain" priority />
             </div>
           </div>
